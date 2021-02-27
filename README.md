@@ -16,3 +16,19 @@ CALL n10s.onto.import.fetch("https://msbi.ipb-halle.de/~sneumann/ChemOnt_2_1-HAC
 
 CALL n10s.onto.import.fetch("ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.owl", "RDF/XML")
 ```
+
+## Installation and Dependencies 
+
+To convert from GML graphs to Cypher, you'll need https://github.com/MetClassNet/gml2cypher.
+
+```
+sudo apt install python-is-python3
+sudo apt install python3-igraph
+
+git clone https://github.com/MetClassNet/gml2cypher
+```
+
+Then you should be able to run e.g.
+```
+python gml2cypher/gml2cypher.py -n 'MTBLS1586:feature' -e 'mzdiff' MTBLS1586/mzdiff.gml | cypher-shell
+```
