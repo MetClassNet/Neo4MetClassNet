@@ -31,4 +31,7 @@ git clone https://github.com/MetClassNet/gml2cypher
 Then you should be able to run e.g.
 ```
 python gml2cypher/gml2cypher.py -n 'MTBLS1586:feature' -e 'mzdiff' MTBLS1586/mzdiff.gml | cypher-shell
+python gml2cypher/gml2cypher.py -n 'MTBLS1586:feature' -e 'similarity' MTBLS1586/similarity.gml | cypher-shell
+python gml2cypher/gml2cypher.py -n 'MTBLS1586:feature' -e 'pears' MTBLS1586/pears.gml | cypher-shell 
+
 ```
