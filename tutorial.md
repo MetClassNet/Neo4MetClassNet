@@ -76,17 +76,17 @@ RETURN distinct count(r),k,type(r)
 
 __the Cypher Query Language synthax:__
 
-`()` :  a node
-`-->` : an edge (a.k.a. _relationship_)
+`()` :  a node  
+`-->` : an edge (a.k.a. _relationship_)  
 
-`(n)` :  a node stored in a variable named n
-`-[e]->` : a edge stored in a variable named e
+`(n)` :  a node stored in a variable named n  
+`-[e]->` : a edge stored in a variable named e  
 
-`(:Peak)` :  a node of a given class (a.k.a. _label_)
-`-[:Corr]->` :  a relationship of a given class (a.k.a. _ltype_)
+`(:Peak)` :  a node of a given class (a.k.a. _label_)  
+`-[:Corr]->` :  a relationship of a given class (a.k.a. _ltype_)  
 
-`(n {mass:987})` :  a node with a given attribute (a.k.a. _propertie_)
-`-[e {shift:38}]->` :  an edge with a given propertie
+`(n {mass:987})` :  a node with a given attribute (a.k.a. _propertie_)  
+`-[e {shift:38}]->` :  an edge with a given propertie  
 
 __Main Cypher clauses:__ 
 
@@ -135,3 +135,7 @@ __Main Cypher clauses:__
 | [`WITH ... [AS]`](https://neo4j.com/docs/cypher-manual/current/clauses/with/#query-with) | Same as `RETURN`, but create chained query by piping the results from one to the next. `AS` can be used to store results in variables. [Functions](https://neo4j.com/docs/cypher-manual/current/functions/) can also be used to process results before piping. |
 | [`UNION`](https://neo4j.com/docs/cypher-manual/current/clauses/union/#query-union) | Combines the result of multiple queries into a single result set. __Duplicates are removed__.|
 | [`UNION ALL`](https://neo4j.com/docs/cypher-manual/current/clauses/union/#query-union)| Combines the result of multiple queries into a single result set. __Duplicates are retained__.|
+
+
+### In practice: Sample queries
+[TODO]
