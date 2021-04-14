@@ -90,13 +90,13 @@ __the Cypher Query Language synthax:__
 
 __Main Cypher clauses:__ 
 
-> A basic cypher query is usually structured in 3 parts:
- - a __pattern__ : a description of the kind of subgraph we're interested in. 
-	 - _Example: A peak in a experimental layer + its neighbors that are mapped in the knowledge layer_
- - an __anchor__ : constraints that define where the pattern will be searched. (some basic property/type constraints can be defined directly in the pattern)
-	 - _Example: __the__ peak __with mass xxxx__ in experimental layer + its neighbors that are mapped in the knowledge layer_
- - a __format__ : a description of what to keep and how we want the information to be displayed.
-	 -  _Example: __from__ the peak with mass xxxx in experimental layer + its neighbors that are mapped in the knowledge layer, __get the list of  names and masses of  the neighbors__._
+> A basic cypher query is usually structured in 3 parts:  
+	 - a __pattern__ : a description of the kind of subgraph we're interested in.   
+	  	_Example: A peak in a experimental layer + its neighbors that are mapped in the knowledge layer_  
+	 - an __anchor__ : constraints that define where the pattern will be searched. (some basic property/type constraints can be defined directly in the pattern)  
+		 _Example: __the__ peak __with mass xxxx__ in experimental layer + its neighbors that are mapped in the knowledge layer_  
+	 - a __format__ : a description of what to keep and how we want the information to be displayed.  
+		 _Example: __from__ the peak with mass xxxx in experimental layer + its neighbors that are mapped in the knowledge layer, __get the list of  names and masses of  the neighbors__._  
 
 | Clause | Description |
 | ----- | ---- |
