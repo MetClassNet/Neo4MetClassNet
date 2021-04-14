@@ -5,21 +5,21 @@
 4.  ??Ask an admin to add your key to /home/ubuntu/.ssh/authorized\_keys on the metclassnet host.??
 5. add to following to the ssh config file usually located at ```~/.ssh/config```
 
-> Host denbi-jumphost-01.bihealth.org
-	> HostName denbi-jumphost-01.bihealth.org  
-	> User __[MY_USER_ID]__
-	> IdentityFile __[PATH_TO_PRIVATE_KEY]_  
-	> ServerAliveInterval 120
-	> ForwardAgent yes
->
+> Host denbi-jumphost-01.bihealth.org  
+	 HostName denbi-jumphost-01.bihealth.org  
+	 User __[MY_USER_ID]__  
+	 IdentityFile __[PATH_TO_PRIVATE_KEY]__  
+	 ServerAliveInterval 120  
+	 ForwardAgent yes  
+
 >  Host metclassnet  
-	>  HostName 172.16.103.32   
-	>  IdentityFile __[PATH_TO_PRIVATE_KEY]__
-	>  User ubuntu  
-	>  ProxyJump denbi-jumphost-01.bihealth.org
-	>  LocalForward 7474 metclassnet:7474
-	>  LocalForward 7687 metclassnet:7687
-	>  ServerAliveInterval 120
+	  HostName 172.16.103.32   
+	  IdentityFile __[PATH_TO_PRIVATE_KEY]__  
+	  User ubuntu  
+	  ProxyJump denbi-jumphost-01.bihealth.org  
+	  LocalForward 7474 metclassnet:7474  
+	  LocalForward 7687 metclassnet:7687  
+	  ServerAliveInterval 120  
 	
 the __[MY_USER_ID]__ is the _Elixir Login_ obtained at stage 3. The path to the __private__ key is usualy `~/.ssh/id_rsa`
  
@@ -63,7 +63,7 @@ UNWIND keys(r) as k
 RETURN distinct count(r),k,type(r)
  ```
  
- _note: if the total number of nodes and relationship is large, a random sample can be extracted using_ `MATCH (n) WHERE rand() <= 0.10`_ (here, 10% of nodes are sampled)_
+ _note: if the total number of nodes and relationship is large, a random sample can be extracted using_ `MATCH (n) WHERE rand() <= 0.10`_(here, 10% of nodes are sampled)_
  
  ### How to start: What can we do?
  
@@ -74,7 +74,7 @@ RETURN distinct count(r),k,type(r)
  
 - write a Cypher query
 
-__the Cypher Query Language synthax : __
+__the Cypher Query Language synthax:__
 
 `()` :  a node
 `-->` : an edge (a.k.a. _relationship_)
@@ -88,15 +88,15 @@ __the Cypher Query Language synthax : __
 `(n {mass:987})` :  a node with a given attribute (a.k.a. _propertie_)
 `-[e {shift:38}]->` :  an edge with a given propertie
 
-__ Main Cypher clauses :__ 
+__Main Cypher clauses:__ 
 
 > A basic cypher query is usually structured in 3 parts:
-> - a __pattern__ : a description of the kind of subgraph we're interested in. 
->	 - _Example: A peak in a experimental layer + its neighbors that are mapped in the knowledge layer_
-> - an __anchor__ : constraints that define where the pattern will be searched. (some basic property/type constraints can be defined directly in the pattern)
->	 - _Example: __the__ peak __with mass xxxx__ in experimental layer + its neighbors that are mapped in the knowledge layer_
-> - a __format__ : a description of what to keep and how we want the information to be displayed.
->	 -  _Example: __from__ the peak with mass xxxx in experimental layer + its neighbors that are mapped in the knowledge layer, __get the list of  names and masses of  the neighbors__. _
+ - a __pattern__ : a description of the kind of subgraph we're interested in. 
+	 - _Example: A peak in a experimental layer + its neighbors that are mapped in the knowledge layer_
+ - an __anchor__ : constraints that define where the pattern will be searched. (some basic property/type constraints can be defined directly in the pattern)
+	 - _Example: __the__ peak __with mass xxxx__ in experimental layer + its neighbors that are mapped in the knowledge layer_
+ - a __format__ : a description of what to keep and how we want the information to be displayed.
+	 -  _Example: __from__ the peak with mass xxxx in experimental layer + its neighbors that are mapped in the knowledge layer, __get the list of  names and masses of  the neighbors__._
 
 | Clause | Description |
 | ----- | ---- |
@@ -124,10 +124,10 @@ __ Main Cypher clauses :__
  
  ### Going further: performing complex cypher queries
 
->More complex queries can be build by combining basic ones:
-	> - __nested__ queries : where an anchor can be definied as matching another pattern.
-	> - __chained__ queries : where the results of a query are passed as input to another one.
-	> - __combined__ queries : where the results are a combinaison of the results of multiple queries.
+>More complex queries can be build by combining basic ones:  
+	 - __nested__ queries : where an anchor can be definied as matching another pattern.  
+	 - __chained__ queries : where the results of a query are passed as input to another one.  
+	 - __combined__ queries : where the results are a combinaison of the results of multiple queries.  
 
 | Clause | Description |
 | ----- | ---- |
