@@ -1,0 +1,137 @@
+## Connection to our remote instance
+1. If not already done, generate ssh keys using `ssh-keygen` 
+2. register via [https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.el\[…\]cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet](https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet&targetexisting=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet)
+3. log to account add your ssh **public key** (usually `~/.ssh/id_rsa.pub`) at [https://cloud.denbi.de/portal/webapp/#/userinfo](https://cloud.denbi.de/portal/webapp/#/userinfo)
+4.  ??Ask an admin to add your key to /home/ubuntu/.ssh/authorized\_keys on the metclassnet host.??
+5. add to following to the ssh config file usually located at ```~/.ssh/config```
+
+> Host denbi-jumphost-01.bihealth.org
+	> HostName denbi-jumphost-01.bihealth.org  
+	> User **[MY_USER_ID]**
+	> IdentityFile **[PATH_TO_PRIVATE_KEY]**  
+	> ServerAliveInterval 120
+	> ForwardAgent yes
+>
+>  Host metclassnet  
+	>  HostName 172.16.103.32   
+	>  IdentityFile **[PATH_TO_PRIVATE_KEY]**
+	>  User ubuntu  
+	>  ProxyJump denbi-jumphost-01.bihealth.org
+	>  LocalForward 7474 metclassnet:7474
+	>  LocalForward 7687 metclassnet:7687
+	>  ServerAliveInterval 120
+	
+the **[MY_USER_ID]** is the _Elixir Login_ obtained at stage 3. The path to the **private** key is usualy `~/.ssh/id_rsa`
+ 
+ 6. Connect from cypher-shell using ```cypher-shell -u neo4j``` (at neo4j://localhost:7687) or from your browser using  ```http://localhost:7474/browser/```. If prompt for creditentials, use "neo4j" as user and set any password.
+  
+## Exploitation of our data
+
+### How to start : What's in there?
+
+ - Get the list of nodes and edges types ("_node labels_" and "_relationship type_" in Neo4J speech)
+ ```
+ CALL db.relationshipTypes()
+ ```
+ ```
+ CALL db.labels()
+ ```
+ - show how they are connected (the the data model):
+ ```
+ CALL db.schema.visualization()
+ ```
+ - see how many of them are in there:
+ ```
+ MATCH (n)
+ RETURN count(n)
+ ```
+ 
+ ```
+ MATCH ()-[r]-()
+ RETURN count(r)
+ ```
+ - see the kind of attributes ("_properties_") they have
+ ```
+MATCH (n)
+UNWIND keys(n) as k
+RETURN distinct count(n),k,labels(n)
+ ```
+ 
+  ```
+MATCH ()-[r]-()
+UNWIND keys(r) as k
+RETURN distinct count(r),k,type(r)
+ ```
+ 
+ _note: if the total number of nodes and relationship is large, a random sample can be extracted using_ `MATCH (n) WHERE rand() <= 0.10`_ (here, 10% of nodes are sampled)_
+ 
+ ### How to start: What can we do?
+ 
+ - get the list of functions that can be used in cypher (the `count()`, `key()`, `type()` and `labels()` that we used in the previous steps can be found here):
+ ```
+ CALL dbms.functions()
+ ```
+ 
+- write a Cypher query
+
+**the Cypher Query Language synthax : **
+
+`()` :  a node
+`-->` : an edge (a.k.a. _relationship_)
+
+`(n)` :  a node stored in a variable named n
+`-[e]->` : a edge stored in a variable named e
+
+`(:Peak)` :  a node of a given class (a.k.a. _label_)
+`-[:Corr]->` :  a relationship of a given class (a.k.a. _ltype_)
+
+`(n {mass:987})` :  a node with a given attribute (a.k.a. _propertie_)
+`-[e {shift:38}]->` :  an edge with a given propertie
+
+** Main Cypher clauses :** 
+
+> A basic cypher query is usually structured in 3 parts:
+> - a __pattern__ : a description of the kind of subgraph we're interested in. 
+>	 - _Example: A peak in a experimental layer + its neighbors that are mapped in the knowledge layer_
+> - an __anchor__ : constraints that define where the pattern will be searched. (some basic property/type constraints can be defined directly in the pattern)
+>	 - _Example: __the__ peak __with mass xxxx__ in experimental layer + its neighbors that are mapped in the knowledge layer_
+> - a __format__ : a description of what to keep and how we want the information to be displayed.
+>	 -  _Example: __from__ the peak with mass xxxx in experimental layer + its neighbors that are mapped in the knowledge layer, __get the list of  names and masses of  the neighbors__. _
+
+| Clause | Description |
+| ----- | ---- |
+| **PATTERN**| |
+| [`MATCH`](https://neo4j.com/docs/cypher-manual/current/clauses/match/#query-match) | Specify the patterns to search for in the database. |
+| [`OPTIONAL MATCH`](https://neo4j.com/docs/cypher-manual/current/clauses/optional-match/#query-optional-match) | Specify the patterns to search for in the database while allowing missing parts. |
+| **ANCHOR**| |
+| [`WHERE`](https://neo4j.com/docs/cypher-manual/current/clauses/where/#query-where) | Adds constraints to the patterns in a `MATCH` or `OPTIONAL MATCH` clause.|
+| [`AND`/`OR`/`NOT`](https://neo4j.com/docs/cypher-manual/current/syntax/operators/#query-operators-boolean)| Logical operator to combine constraints. |
+| **FORMAT**| |
+| [`RETURN`](https://neo4j.com/docs/cypher-manual/current/clauses/return/#query-return) | Defines what to include in the query result set. Can be the matching nodes and/or relationships as a subgraph, the values of some of their properties, or the results of [functions](https://neo4j.com/docs/cypher-manual/current/functions/) applyed on them (`count()`, `max()`, `sum()`).|
+| [`RETURN ... AS`](https://neo4j.com/docs/cypher-manual/current/clauses/return/#query-return)| Set results format by defining a column alias. |
+| [`ORDER BY [ASC/DESC]`](https://neo4j.com/docs/cypher-manual/current/clauses/order-by/#query-order)| Follows a `RETURN` clause, specifying that the output should be sorted in either ascending (the default) or descending order.|
+| [`LIMIT`](https://neo4j.com/docs/cypher-manual/current/clauses/limit/#query-limit)| Follows a `RETURN` clause, specifying a maximum number of results to be outputed. |
+| [`DISTINCT`](https://neo4j.com/docs/cypher-manual/current/syntax/operators/#query-operators-aggregation)| Remove remove duplicates values. |
+
+ Example: _from the peak with mass xxxx in experimental layer + its neighbors that are mapped in the knowledge layer, get the list of  names and masses of  the neighbors._
+ ```
+ MATCH (n1:Peak)-[:MassShift]-(n2:Peak)
+ WHERE n1.mass = xxxx
+ AND (n2)-[:Match]-(n3:SbmlSpecie)
+ RETURN n2.mass AS neighbor_mass, n2.name AS neighbor_name
+ ORDER BY neighbor_mass DESC
+ ```
+ 
+ ### Going further: performing complex cypher queries
+
+>More complex queries can be build by combining basic ones:
+	> - __nested__ queries : where an anchor can be definied as matching another pattern.
+	> - __chained__ queries : where the results of a query are passed as input to another one.
+	> - __combined__ queries : where the results are a combinaison of the results of multiple queries.
+
+| Clause | Description |
+| ----- | ---- |
+| [`WHERE EXISTS { ... }`](https://neo4j.com/docs/cypher-manual/current/clauses/where/#existential-subqueries) | Use a nested subquery to define the constraints to the patterns.|
+| [`WITH ... [AS]`](https://neo4j.com/docs/cypher-manual/current/clauses/with/#query-with) | Same as `RETURN`, but create chained query by piping the results from one to the next. `AS` can be used to store results in variables. [Functions](https://neo4j.com/docs/cypher-manual/current/functions/) can also be used to process results before piping. |
+| [`UNION`](https://neo4j.com/docs/cypher-manual/current/clauses/union/#query-union) | Combines the result of multiple queries into a single result set. **Duplicates are removed**.|
+| [`UNION ALL`](https://neo4j.com/docs/cypher-manual/current/clauses/union/#query-union)| Combines the result of multiple queries into a single result set. **Duplicates are retained**.|
