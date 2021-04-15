@@ -1,32 +1,7 @@
-## Connection to a remote instance on de.NBI cloud
-1. If not already done, generate ssh keys using `ssh-keygen` 
-2. register via [https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.el\[…\]cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet](https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet&targetexisting=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet)
-3. log to account add your ssh __public key__ (usually `~/.ssh/id_rsa.pub`) at [https://cloud.denbi.de/portal/webapp/#/userinfo](https://cloud.denbi.de/portal/webapp/#/userinfo)
-4. The following are the essentials mentioned in https://cloud.denbi.de/wiki/Compute_Center/Berlin/
-5.  Ask an admin to add your key to /home/ubuntu/.ssh/authorized\_keys on the metclassnet host.
-6. add to following to the ssh config file usually located at ```~/.ssh/config```
+## Exploitation of MetClassNet data
 
-> Host denbi-jumphost-01.bihealth.org  
-	 HostName denbi-jumphost-01.bihealth.org  
-	 User __[MY_USER_ID]__  
-	 IdentityFile __[PATH_TO_PRIVATE_KEY]__  
-	 ServerAliveInterval 120  
-	 ForwardAgent yes  
-
->  Host metclassnet  
-	  HostName 172.16.103.32   
-	  IdentityFile __[PATH_TO_PRIVATE_KEY]__  
-	  User ubuntu  
-	  ProxyJump denbi-jumphost-01.bihealth.org  
-	  LocalForward 7474 metclassnet:7474  
-	  LocalForward 7687 metclassnet:7687  
-	  ServerAliveInterval 120  
-	
-the __[MY_USER_ID]__ is the _Elixir Login_ obtained at stage 3. The path to the __private__ key is usualy `~/.ssh/id_rsa`
- 
- 6. Connect from cypher-shell using ```cypher-shell -u neo4j``` (at neo4j://localhost:7687) or from your browser using  ```http://localhost:7474/browser/```. If prompt for creditentials, use "neo4j" as user and set any password.
-  
-## Exploitation of our data
+MetClassNet data are stored on a Neo4J graph database, which can be queried using the Cypher language.
+There is a plethora of tutorials for Neo4j neophytes: the official [neo4j.com](https://neo4j.com/developer/get-started/) is a very good place to start. It is recommended to follow this guide, although, for a quick hands-on session by people familiar with working with graphs, some of the basics regarding the query language are covered here. Experienced users and people just here to have a look can directly jump to the samples queries section to see the kind of relevant information that can be extracted from our system.
 
 ### How to start : What's in there?
 
