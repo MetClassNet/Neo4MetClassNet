@@ -1,9 +1,10 @@
-## Connection to our remote instance
+## Connection to a remote instance on de.NBI cloud
 1. If not already done, generate ssh keys using `ssh-keygen` 
 2. register via [https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.el\[…\]cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet](https://perun.elixir-czech.cz/fed/registrar/?vo=elixir&targetnew=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet&targetexisting=https%3A%2F%2Fperun.elixir-czech.cz%2Ffed%2Fregistrar%2F%3Fvo%3Ddenbi%26group%3DMetClassNet)
 3. log to account add your ssh __public key__ (usually `~/.ssh/id_rsa.pub`) at [https://cloud.denbi.de/portal/webapp/#/userinfo](https://cloud.denbi.de/portal/webapp/#/userinfo)
-4.  ??Ask an admin to add your key to /home/ubuntu/.ssh/authorized\_keys on the metclassnet host.??
-5. add to following to the ssh config file usually located at ```~/.ssh/config```
+4. The following are the essentials mentioned in https://cloud.denbi.de/wiki/Compute_Center/Berlin/
+5.  Ask an admin to add your key to /home/ubuntu/.ssh/authorized\_keys on the metclassnet host.
+6. add to following to the ssh config file usually located at ```~/.ssh/config```
 
 > Host denbi-jumphost-01.bihealth.org  
 	 HostName denbi-jumphost-01.bihealth.org  
