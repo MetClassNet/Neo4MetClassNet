@@ -114,4 +114,24 @@ __Main Cypher clauses:__
 
 
 ### In practice: Sample queries
-[TODO]
+
+- __get features' degree (number of neighbors)__  
+```
+MATCH (n1:feature)--(n2) 
+RETURN n1.name, count(n2) AS degree 
+ORDER BY degree DESC
+```
+
+- __get the ego network (network of neighbors) of a given node__  
+```
+MATCH (n1:feature {name:"Cluster_0619"})-[r1]-(n2) 
+OPTIONAL MATCH (n2)-[r2]-(n3)--(n1) 
+RETURN r1,n2,r2,n3
+```
+
+- __get pairs with mzdiff match + correlation__  
+```
+MATCH (n1:feature)-[diff:mzdiff]-(n2:feature)
+MATCH (n1)-[corr:pears]-(n2)
+RETURN n1.name, n2.name, diff.value, corr.pearson
+```
