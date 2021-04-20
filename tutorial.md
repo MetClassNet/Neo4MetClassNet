@@ -58,11 +58,11 @@ __the Cypher Query Language synthax:__
 `(n)` :  a node stored in a variable named n  
 `-[e]->` : a edge stored in a variable named e  
 
-`(:Peak)` :  a node of a given class (a.k.a. _label_)  
-`-[:Corr]->` :  a relationship of a given class (a.k.a. _ltype_)  
+`(:feature)` :  a node of a given class (a.k.a. _label_)  
+`-[:pears]->` :  a relationship of a given class (a.k.a. _ltype_)  
 
-`(n {mass:987})` :  a node with a given attribute (a.k.a. _propertie_)  
-`-[e {shift:38}]->` :  an edge with a given propertie  
+`(n {Formula:"C6H12O6"})` :  a node with a given attribute (a.k.a. _propertie_)  
+`-[e {massdifference:38}]->` :  an edge with a given propertie  
 
 __Main Cypher clauses:__ 
 
@@ -91,9 +91,9 @@ __Main Cypher clauses:__
 
  Example: _from the peak with mass xxxx in experimental layer + its neighbors that are mapped in the knowledge layer, get the list of  names and masses of  the neighbors._
  ```
- MATCH (n1:Peak)-[:MassShift]-(n2:Peak)
- WHERE n1.mass = xxxx
- AND (n2)-[:Match]-(n3:SbmlSpecie)
+ MATCH (n1:feature)-[:mzdiff]-(n2:feature)
+ WHERE n1.value = xxxx
+ AND (n2)-[:match]-(:metabolites)
  RETURN n2.mass AS neighbor_mass, n2.name AS neighbor_name
  ORDER BY neighbor_mass DESC
  ```
