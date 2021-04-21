@@ -135,3 +135,12 @@ MATCH (n1:feature)-[diff:mzdiff]-(n2:feature)
 MATCH (n1)-[corr:pears]-(n2)
 RETURN n1.name, n2.name, diff.value, corr.pearson
 ```
+
+- __shows subclasses of a chemical class__
+```
+MATCH p=(c:n4sch__Class {n4sch__label:"Flavonoids"})<-[*]-(c2) 
+RETURN p;
+```
+> This query search for a path of undefined length, using a wildcard `[*]`.
+> A specific length can be set using `[*3]`, and a range using `[*1..3]` .  
+> ⚠ Please note that this kind of query (path search) can take a lot of time to compute. ⚠
