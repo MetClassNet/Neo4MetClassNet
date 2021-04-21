@@ -143,4 +143,12 @@ RETURN p;
 ```
 > This query search for a path of undefined length, using a wildcard `[*]`.
 > A specific length can be set using `[*3]`, and a range using `[*1..3]` .  
-> ⚠ Please note that this kind of query (path search) can take a lot of time to compute. ⚠
+> ⚠ Please note that this kind of query (path search) can take a lot of time to compute if not well constrained. ⚠
+
+-__get transitions from mass difference range of value__
+```
+MATCH (u:feature)-[e:mzdiff]-(v:feature) 
+WHERE 50 < tofloat(e.massdifference) <= 70 
+RETURN DISTINCT e.value
+```
+> While neo4j is optimized for query involving network traversal, selecting from properties values isn't its strength, compared to traditional SQL databases.
