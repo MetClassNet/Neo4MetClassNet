@@ -145,7 +145,7 @@ RETURN p;
 > A specific length can be set using `[*3]`, and a range using `[*1..3]` .  
 > ⚠ Please note that this kind of query (path search) can take a lot of time to compute if not well constrained. ⚠
 
--__get transitions from mass difference range of value__
+- __get transitions from mass difference range of value__
 ```
 MATCH (u:feature)-[e:mzdiff]-(v:feature) 
 WHERE 50 < tofloat(e.massdifference) <= 70 
